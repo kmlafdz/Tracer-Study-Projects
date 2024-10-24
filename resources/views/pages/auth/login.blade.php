@@ -45,16 +45,15 @@
 
     {{-- Notifikasi --}}
     @if (session('notif_loginn'))
-        <div class="fixed top-0 left-1/2 transform -translate-x-1/2 bg-red-600 text-white p-4 rounded-b-lg shadow-md z-50 w-auto max-w-md">
-            <div class="flex justify-between items-center">
-                <span>{{ session('notif_loginn') }}</span>
-                <button class="ml-4 text-white focus:outline-none" onclick="this.parentElement.parentElement.style.display='none'">
-                    &times;
-                </button>
-            </div>
+    <div class="fixed top-0 left-1/2 transform -translate-x-1/2 bg-red-600 text-white p-4 rounded-b-lg shadow-md z-50 w-auto max-w-md">
+        <div class="flex justify-between items-center">
+            <span>{{ session('notif_loginn') }}</span>
+            <button class="ml-4 text-white focus:outline-none" onclick="this.parentElement.parentElement.style.display='none'">
+                &times;
+            </button>
         </div>
-    @endif
-
+    </div>
+@endif
     <div class="relative z-20 flex items-center justify-center min-h-screen">
         <div class="p-8 rounded-lg max-w-md w-full fade-in" id="login-form">
             <h2 class="text-center text-2xl font-bold text-white mb-6">Login</h2>

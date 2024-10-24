@@ -15,7 +15,6 @@ class AuthController extends Controller
         return view('pages.auth.login');
     }
 
-
     public function login(Request $request)
     {
         $request->validate([
@@ -23,27 +22,33 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        // Mencoba autentikasi pengguna
         $user = User::where('email', $request->input('email'))->first();
 
-        if ($user) {
-            if (!Hash::check($request->input('password'), $user->password)) {
-                return $this->handleFailedLogin($request, 'Password salah.');
-            }
-
+        // Menggunakan fungsi attemptLogin untuk memeriksa email dan password
+        if ($this->attemptLogin($user, $request->input('password'))) {
             return $this->handleUserStatus($request, $user);
         }
 
-        return $this->handleFailedLogin($request, 'Email tidak terdaftar.');
+        // Menggunakan flash message untuk notifikasi kesalahan
+        return $this->handleFailedLogin($request, 'Email atau password salah.');
+    }
+
+    private function attemptLogin(?User $user, string $password): bool
+    {
+        // Memeriksa apakah pengguna ada dan password cocok
+        return $user && Hash::check($password, $user->password);
     }
 
     private function handleFailedLogin(Request $request, string $message)
     {
-        $request->session()->put('notif_loginn', $message);
-        return redirect()->back()->withErrors(['email' => $message]);
+        // Menggunakan flash message untuk notifikasi
+        return redirect()->back()->withInput()->with('notif_loginn', $message);
     }
 
     private function handleUserStatus(Request $request, User $user)
     {
+        // Memisahkan logika penanganan pengguna berdasarkan status
         switch ($user->status) {
             case 'pending':
                 return $this->handleFailedLogin($request, 'Akun Anda membutuhkan persetujuan administrator.');
@@ -60,6 +65,7 @@ class AuthController extends Controller
 
     private function storeUserSession(User $user)
     {
+        // Menyimpan informasi sensitif dengan enkripsi
         session([
             'user_id' => encrypt($user->id),      // Menyimpan id user
             'user_role' => encrypt($user->role),  // Menyimpan role user

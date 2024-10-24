@@ -45,7 +45,7 @@ class="fixed flex flex-col top-14 left-0 w-14 hover:w-64 md:w-64 bg-blue-900 dar
                         </path>
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Messages</span>
+                <span class="ml-2 text-sm tracking-wide truncate">Event Setting</span>
             </a>
         </li>
         <li>
